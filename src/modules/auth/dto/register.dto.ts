@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
+import { SameAs } from './../../common/validator/same-as.validator.decorator'; 
 /* import { Unique } from './../common';
-import { SameAs } from './../common/validator/same-as.validator'; 
 import { User } from '../../user';
 */
 export class RegisterDto {
@@ -32,6 +32,6 @@ export class RegisterDto {
     password: string;
 
     @ApiProperty({ required: true })
-    /*@SameAs('password') */
+    @SameAs('password')
     passwordConfirmation: string;
 }
