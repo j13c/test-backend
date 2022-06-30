@@ -1,9 +1,9 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
-/* import { AuthGuard } from '@nestjs/passport'; */
+import { Body, Controller, Get, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './';
-import { LoginDto, RegisterDto } from './dto';
-/* import { CurrentUser } from './../common/decorator/current-user.decorator'; */
+import { ForgotPassword, LoginDto, RegisterDto, ResetPassword } from './dto';
+import { CurrentUser } from './../common/decorator/current-user.decorator';
 import { User, UsersService } from './../user';
 
 @Controller('api/auth')
@@ -32,12 +32,28 @@ export class AuthController {
         return await this.authService.createToken(user);
     }
 
-    /*   @ApiBearerAuth()
-      @UseGuards(AuthGuard())
-      @Get('me')
-      @ApiResponse({ status: 200, description: 'Successful Response' })
-      @ApiResponse({ status: 401, description: 'Unauthorized' })
-      async getLoggedInUser(@CurrentUser() user: User): Promise<User> {
+    @Post('forgot-password')
+    @ApiResponse({ status: 200, description: 'Succesful Request' })
+    @ApiResponse({ status: 400, description: 'Bad Request' })
+    async forgotPassword(@Body() payload: ForgotPassword): Promise<any> {
+        return await this.authService.forgotPassword(payload);
+    }
+
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard())
+    @Put('reset-password')
+    @ApiResponse({ status: 201, description: 'Successful Update' })
+    @ApiResponse({ status: 400, description: 'Bad Request' })
+    async resetPassword(@Body() payload: ResetPassword, @CurrentUser() user: User): Promise<any> {
+        return await this.authService.resetPassword(payload, user);
+    }
+
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard())
+    @Get('me')
+    @ApiResponse({ status: 200, description: 'Successful Response' })
+    @ApiResponse({ status: 401, description: 'Unauthorized' })
+    async getLoggedInUser(@CurrentUser() user: User): Promise<User> {
         return user;
-      } */
+    }
 }
