@@ -11,11 +11,13 @@ import { UserModule } from './../user';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 import { AuthController } from './auth.controller';
+import { MailModule } from '../mail/mail.module';
 
 @Module({
   imports: [
     UserModule,
     ConfigModule,
+    MailModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       imports: [ConfigModule],

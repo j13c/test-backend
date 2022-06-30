@@ -9,7 +9,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-  ) {}
+  ) { }
 
   async get(id: number) {
     return this.userRepository.findOneBy({ id });
@@ -28,6 +28,16 @@ export class UsersService {
       );
     }
 
+    return await this.userRepository.save(payload);
+  }
+
+  async update(payload: UserFillableFields){
+    const user = await this.getByEmail(payload.email);
+    if (!user) {
+      throw new NotAcceptableException(
+        'You cannot update a user that does not exist',
+      );
+    }
     return await this.userRepository.save(payload);
   }
 }
