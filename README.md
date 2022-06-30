@@ -40,10 +40,16 @@ $ npm run start
 
 # watch mode
 $ npm run start:dev
+or
+$ nest start --watch
 
 # production mode
 $ npm run start:prod
 ```
+
+## Swagger
+
+http://localhost:3000/api/docs/
 
 ## Test
 
