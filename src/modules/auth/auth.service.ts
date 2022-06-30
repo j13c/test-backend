@@ -1,6 +1,7 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NotFoundException, ServiceUnavailableException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Hash } from '../../utils/Hash';
+import { MailService } from '../mail/mail.service';
 import { ConfigService } from './../config';
 import { User, UsersService } from './../user';
 import { ForgotPassword, ResetPassword } from './dto';
@@ -12,6 +13,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly userService: UsersService,
+    private readonly mailService: MailService,
   ) { }
 
   async createToken(user: User) {
@@ -38,8 +40,15 @@ export class AuthService {
     const token = this.jwtService.sign({ id: user.id });
     const RESET_PASSWORD = '/reset-password/';
     const link = `${this.configService.get('APP_URL')}${RESET_PASSWORD}${token}`;
+    
     //TODO: Send email with link
-    /* try catch */
+    try {
+      await this.mailService.sendResetPassword(user,link);
+    } catch (error) {
+      console.log(error);
+      throw new ServiceUnavailableException(`Mail service not available ${link}`);
+    }
+
     console.log(link);
     return ` we send you link for reset password to email ${payload.email}`;
   }
