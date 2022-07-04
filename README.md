@@ -32,6 +32,11 @@
 $ npm install
 ```
 
+## Docker
+```bash
+$ docker build . -t test-aluxion-container -f .\Docker\Dockerfile
+```
+
 ## Running the app
 
 ```bash
