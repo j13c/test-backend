@@ -34,7 +34,8 @@ $ npm install
 
 ## Docker
 ```bash
-$ docker build . -t test-aluxion-container -f .\Docker\Dockerfile
+$ docker build . -t test-aluxion-image -f .\Docker\Dockerfile
+$ docker run -p 3300:8080 -d --network aluxion-network --name aluxion-container-8080  test-aluxion-image
 ```
 
 ## Running the app
